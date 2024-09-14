@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"> <!--her angives at vi arbejder med thymeleaf og prefix th skal anvendes, når der skal kaldes attributter-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cocktails</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h1>Search cocktails with specific ingredients</h1>
+
+<form action="/search" method="get">
+    <label for="idNo1">Search by ingredient</label>
+    <input type="text" id="idNo1" name="ingredient" placeholder="Enter ingredient"
+           th:value="${ingredientName != null ? ingredientName : ''}">
+    <button type="submit">Search</button>
+</form>
+<p th:if="${ingredientName != null}">Showing results for: <strong th:text="${ingredientName}"></strong>
+
+</p>
+<ul>
+    <li th:each="cocktail : ${cocktailsWithSpecificIngredient}">
+        <a th:href="@{'cocktails/cocktail?name=' + ${cocktail.name}}" th:text="${cocktail.name}"></a>
+    </li>
+
+</ul>
+</body>
+</html>
