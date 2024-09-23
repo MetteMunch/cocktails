@@ -1,0 +1,40 @@
+
+name: GitHubAction on push or pull
+
+# Kør workflowet, når nogen laver en pull request til main, eller når nogen pusher til main
+on:
+  pull_request:
+    branches:
+      - main  # Kør på pull requests rettet mod main branch
+  push:
+    branches:
+      - main  # Kør også når nogen pusher direkte til main
+
+jobs:
+  build:
+    # Brug en virtuel maskine med Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # Hent koden fra repoet
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3  # Sæt Java op
+      with:
+        distribution: 'temurin'  # Bruger Eclipse Temurin distribution
+        java-version: '21'  # Bruger Java 21
+
+    - name: Cache Maven packages
+      uses: actions/cache@v3  # Cacher Maven-afhængigheder for hurtigere builds
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml  # Kør Maven for at bygge projektet
+
+    - name: Run tests
+      run: mvn test  # Kør tests for at sikre, at koden fungerer korrekt
