@@ -26,7 +26,7 @@ public class ControllerCocktails {
         List<Cocktail> cocktails = sc.getListOfCocktails();
         System.out.println("Cocktails: " + cocktails);  // Debugging
         model.addAttribute("cocktailsList", cocktails);
-        return "index"; //denne String angiver hvilken
+        return "indx"; //denne String angiver hvilken
         // HTML fil.navn Spring skal lede efter og scanne
     }
 
